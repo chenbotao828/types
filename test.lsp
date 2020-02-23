@@ -1,5 +1,11 @@
 ;; ;; (altest "types/test")
 
+(import "types/tests/al")
 (import "types/tests/check")
+(import "types/tests/class")
+(import "types/tests/mix")
+(import "types/tests/num")
 (import "types/tests/operator")
-(import "types/tests/list")
+(import "types/tests/pipe")
+(import "types/tests/str")
+(import "types/tests/time")
