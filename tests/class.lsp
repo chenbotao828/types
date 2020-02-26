@@ -20,3 +20,9 @@
   (lambda (self) (strcat (do self 'class_str) "'s name: " (do self 'name)))
   )
 (assert-eq '"MAN's name: Tom" '(do (man "Tom") 'info))
+
+(defmethod 'man 'init (lambda (self) (list
+    (cons 'nick_name (strcat "Happy " (do self 'name)) ))))
+(assert-eq '"Happy Tom" '(dot (man "Tom") 'nick_name))
+
+(setq _man nil _object nil)
