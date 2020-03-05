@@ -14,6 +14,11 @@
   x
   )
 
+(defun pipe_set (sym fs) 
+  (check "pipe_set" (list sym  sym?))
+  (set sym (pipe (eval sym) fs))
+  )
+
 (defun pipe_func? (x)
   (or (func? x) (sym_func? x) (lambda? x)))
 

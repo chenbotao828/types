@@ -25,4 +25,11 @@
     (cons 'nick_name (strcat "Happy " (do self 'name)) ))))
 (assert-eq '"Happy Tom" '(dot (man "Tom") 'nick_name))
 
-(setq _man nil _object nil)
+(defmethod 'man 'change_name 
+  (lambda (self name) (al_upsert self 'name name))
+  )
+(setq a (man "Jerry"))
+(do_set 'a '(change_name "Tom"))
+(assert-eq '"Tom" '(dot a 'name))
+
+(setq _man nil man nil _object nil object nil a nil)

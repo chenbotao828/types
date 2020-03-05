@@ -62,3 +62,9 @@
       value
       )
   )
+
+(defun do_set (obj_sym key_paras)
+  (check "do_set" (list obj_sym sym? (eval obj_sym) (list cls? obj?)
+                        key_paras (list sym? list?)))
+  (set obj_sym (do (eval obj_sym) key_paras))
+  )

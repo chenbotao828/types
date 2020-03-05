@@ -3,6 +3,11 @@
 (assert-eq '9 '(pipe "123" '(as_list (select int) (select 1+) sum)))
 (assert-eq '"123" '(pipe "1a2v3c" '(as_list (where str_isdemical) sum)))
 
+(setq pipe_set_test 1)
+(pipe_set 'pipe_set_test '((+ 3) sqrt))
+(assert-eq '2 pipe_set_test)
+(setq pipe_set_test nil)
+
 (assert-eq 't '(pipe_func? '(lambda (x) (+ x 1))))
 (assert-eq 't '(pipe_func? (function (lambda (x) (+ x 1)))))
 (assert-eq 't '(pipe_func? (lambda (x) (+ x 1))))

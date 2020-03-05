@@ -29,7 +29,7 @@
 
 (defun al_upsert (al key value)
   (check "al_upsert" (list al (list nil? al?)))
-  (consend (cons key value) (vl-remove (assoc key al) al)))
+  (cons (cons key value) (vl-remove (assoc key al) al)))
 
 (defun al_update (al k v / ret)
   (check "al_update" (list al (list nil? list?)))

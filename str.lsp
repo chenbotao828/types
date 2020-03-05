@@ -58,31 +58,31 @@
     (reverse (cons s strlst))
   ) ) ) )
 
-(defun str_splits (s ds / ret idas stab i j temp)
-  (setq idas nil l (len s) ret nil)
-  (foreach d ds
-           (setq idas (consend (cons d (indexall s d) ) idas))
-           )
-  (setq stab (ll2al (range 0 l 1) (multi (list nil) l)))
-  (foreach i idas
-           (foreach j (cdr i)
-                    (setq stab (al_upsert stab j (consend (car i) (dot stab j))))
-                    )
-           )
-  (setq stab (sort_list stab (lambda (x y) (< (car x) (car y)))))
-  (setq i 0 temp "")
-  (while (< i l)
-         (setq j (get_nth stab i))
-         (cond 
-           ((= (len j) 1) (setq temp (consend (get_nth s i) temp)))
-           ((= (len j) 2) (setq ret (consend temp ret)
-                                temp ""
-                                i (+ i -1 (len (get_nth j 1)))))
-           )
-         (setq i (+ 1 i))
-         )
-  (setq ret (consend temp ret))
-  ret
+(defun str_re_split (s d / L r)
+  (check "str_re_split" (list s str? d (list nil? str?)))
+  (cond
+    ( (= d "") (*error* "Empty seperator in str_re_split") )
+    ( (= d nil) 
+     (progn
+       (foreach i (list "\t" "\n" "\r") (setq s (str_replace s i " ")))
+       (remove (str_re_split s " ") "")
+       ))
+    
+    (t (progn
+        (setq r (vlax-create-object "vbscript.regexp"))
+        (vlax-put-property r 'Global 1)
+        (vlax-put-property r 'Pattern (strcat "([^" d "]+)"))
+        (vlax-for x (vlax-invoke r 'Execute s)(setq L (cons(vla-get-Value x) L)))
+        (vlax-release-object r)
+        (reverse L)
+      )
+    )
+  )
+  )
+
+(defun str_splits (s ds)
+  (check "str_splits" (list s str? ds list?))
+  (str_re_split s (concat ds "|"))
   )
 
 (defun str_splitlines (s)

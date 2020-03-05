@@ -10,6 +10,8 @@
 (assert-eq '(list "" "1" "2" "3" "4" "")
            '(str_split "最1最2最3最4最" "最"))
 
+(assert-eq '(list "1" "2" "3" "4") '(str_re_split "1,2.3,4"  ",|."))
+
 (assert-eq '(list "1" "2" "3" "4") '(str_splits "1,2.3,4" (list "," ".")))
 (assert-eq '(list "1" "2" "3" "4") '(str_splits "1A2B3AB4" (list "A" "B" "AB")))
 

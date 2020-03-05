@@ -105,8 +105,8 @@
   (check "span" (list x (list al? dot_pair? list? str? nil?)
                       start int?
                       end int?))
-  (if (< start 0) (setq start (+ (% start l) l)))
-  (if (< end 0) (setq end (+ (% end l) l)))
+  (if (< start 0) (setq start (+ (rem start l) l)))
+  (if (< end 0) (setq end (+ (rem end l) l)))
   (if is_str (setq x (gbk_str2lst x)))
   (setq ret (lspan x start end))
   (if is_str (gbk_lst2str ret) ret )

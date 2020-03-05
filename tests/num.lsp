@@ -34,5 +34,5 @@
 
 (assert-eq '"101" '(dec2base 5 2))
 (assert-eq '5 '(base2dec "101" 2))
-(assert-eq '"32" '(base2base "1A"  16 8))
-(assert-eq '"1A" '(base2base "32"  8 16))
+(assert-eq '"32" '(base2base "1a"  16 8))
+(assert-eq '"1a" '(base2base "32"  8 16))
