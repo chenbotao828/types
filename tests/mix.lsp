@@ -76,8 +76,8 @@
 
 (assert-eq '(int 1.1) 1)
 (assert-eq '(int "1.1") 1)
-(assert-eq '(float 1) 1.0)
-(assert-eq '(float "1") 1.0)
+(assert-eq '(floatit 1) 1.0)
+(assert-eq '(floatit "1") 1.0)
 
 
 (assert '(random_choice "123"))
@@ -107,8 +107,8 @@
            '(sort '( ((1 2) 3) (1 3) ((1 2) 2) ))
            )
 
-(assert-eq '(reversed (list nil 1 "a" "b" 'AA 'BB - +)) 
-           '(sort_by (list 1 nil - 'aa 'bb "a" "b" + ) >>> ) )
+(assert-eq '(reversed (list nil 1 "a" "b" 'AA 'BB  +)) 
+           '(sort_by (list 1 nil  'aa 'bb "a" "b" + ) >>> ) )
 (assert-eq ''(((1 2) 3) ((1 2) 2) (1 3)) 
            '(sort_by '( ((1 2) 3) (1 3) ((1 2) 2) ) >>> ) )
 

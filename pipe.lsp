@@ -282,3 +282,8 @@
   (sum (select (combinations l r) permutation_all)))
 
 (setq transpose zip)
+
+(defun _or (l)
+  (check "_or" (list l list?))
+  (car (vl-remove nil l))
+  )

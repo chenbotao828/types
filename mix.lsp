@@ -256,8 +256,8 @@
         )
   )
 
-(defun float (x)
-  (check "float" (list x (list num? str?)))
+(defun floatit (x)
+  (check "floatit" (list x (list num? str?)))
   (cond ((num? x) (+ x 0.0))
         ((str? x) (atof x))
         (t nil)

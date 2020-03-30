@@ -28,8 +28,8 @@
 (defmethod 'man 'change_name 
   (lambda (self name) (al_upsert self 'name name))
   )
-(setq a (man "Jerry"))
-(do_set 'a '(change_name "Tom"))
-(assert-eq '"Tom" '(dot a 'name))
+(setq {test_jerry} (man "Jerry"))
+(do_set '{test_jerry} '(change_name "Tom"))
+(assert-eq '"Tom" '(dot {test_jerry} 'name))
 
-(setq _man nil man nil _object nil object nil a nil)
+(setq _man nil man nil _object nil object nil {test_jerry} nil)

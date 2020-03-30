@@ -86,7 +86,7 @@
   (sort kvs)
   )
 
-(defun al_upserts(al al2 / i k v)
+(defun al_upserts (al al2 / i k v)
   (check "al_upserts" (list al al? al2 al?))
   (while al2 (setq i (car al2)
                    k (car i)

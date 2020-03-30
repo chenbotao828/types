@@ -32,11 +32,12 @@
   (setq ret (flatten lst))
   (foreach i ret 
            (check "gbk_lst2str item" (list i int?))
-           (if (not (<= 0 i 255))
-               (*error* (strcat "Out of range in gbk_lst2str item: "
-                                (str i) "not between 0 and 255"
-                                ))
-               ))
+          ;  (if (not (<= 0 i 255))
+          ;      (*error* (strcat "Out of range in gbk_lst2str item: "
+          ;                       (str i) "not between 0 and 255"
+          ;                       ))
+          ;      )
+  )
   (vl-list->string ret)
   )
 

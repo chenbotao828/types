@@ -85,6 +85,10 @@
     )
   )
 
+(defun ename? (x)
+  (if (= 'ename (type x)) t nil)
+  )
+
 (defun check2func (f / sf)
   (check "check2func" (list f func?))
   (setq sf (str f))

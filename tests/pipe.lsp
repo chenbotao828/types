@@ -98,3 +98,5 @@
 (assert-eq '6 '(length (permutation_all '(1 2 3))))
 (assert-eq '3 '(length (combinations '(1 2 3) 2)))
 
+(assert-eq '1 '(_or (list nil nil 1)))
+(assert-eq 'nil '(_or (list nil nil nil)))
