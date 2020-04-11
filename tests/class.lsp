@@ -32,4 +32,12 @@
 (do_set '{test_jerry} '(change_name "Tom"))
 (assert-eq '"Tom" '(dot {test_jerry} 'name))
 
+(assert-eq '_object '(parent _man))
+(assert-eq 'object '(parent man))
+(assert-eq '_object '(parent {test_jerry}))
+
+(assert-eq ''object '(super_do _man 'class))
+(assert-eq ''object '(super_do man 'class))
+(assert-eq ''object '(super_do {test_jerry} 'class))
+
 (setq _man nil man nil _object nil object nil {test_jerry} nil)
