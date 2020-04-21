@@ -66,13 +66,26 @@
   (setq f (as_func f) ret nil)
   (cond 
     ((nil? x) (setq ret t))
-    ((al? x) (setq x (al_keys al))))
-  (while (and x (not ret))
-         (setq ret (or ret (f (car x)))
-               x (cdr x))
-         )
-  ret
+    ((al? x) (setq x (al_keys al)
+                   ret (vl-some 'f x)))
+    (t (setq ret (vl-some 'f x)))
   )
+  ret
+)
+
+; (defun any (x f / ret)
+;   (if (nil? f) (setq f (lambda (x) x)))
+;   (check "any" (list x (list list? nil?) f pipe_func?))
+;   (setq f (as_func f) ret nil)
+;   (cond 
+;     ((nil? x) (setq ret t))
+;     ((al? x) (setq x (al_keys al))))
+;   (while (and x (not ret))
+;          (setq ret (or ret (f (car x)))
+;                x (cdr x))
+;          )
+;   ret
+;   )
 
 (defun where (x f)
   (check "where" (list x (list list? nil?) f pipe_func?))
