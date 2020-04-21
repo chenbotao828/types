@@ -136,7 +136,7 @@
   )
 )
 
-(defun super_do (obj key_paras / key paras get value) 
+(defun super_do (obj key_paras / key paras value first_get second_get) 
   (if (cls_func? obj) 
     (super_do (eval (cadadr obj)) key_paras)
     (progn 
@@ -150,16 +150,20 @@
         )
       )
       (check "super_do" (list key sym? paras (list nil? list?)))
-      (defun get (obj key) 
+      (defun first_get (obj key) 
         (if (assoc key obj) 
-          (al_get obj key)
+          obj
           (if (assoc 'parent obj) 
-            (get (eval (underscore (al_get obj 'parent))) key)
+            (first_get (eval (underscore (al_get obj 'parent))) key)
             nil
           )
         )
       )
-      (setq value (get (parent obj) key))
+      (defun second_get (obj key)
+        (setq obj (parent (first_get obj key)))
+        (al_get (first_get obj key) key)
+      )
+      (setq value (second_get obj key))
       (if (func? value) 
         (apply 'value (append (list obj) paras))
         value
