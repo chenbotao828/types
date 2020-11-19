@@ -9,6 +9,14 @@
 (assert '(str? "Hi"))
 (assert '(not (str? 1)))
 
+(assert '(str0? "0"))
+(assert '(str0? "0."))
+(assert '(str0? "0.0"))
+(assert '(str0? "0.00"))
+(assert '(not (str0? 0)))
+(assert '(not (str0? "1")))
+(assert '(not (str0? "test")))
+
 (assert '(list? (list 1 2 3)))
 (assert '(not (list? '())))
 

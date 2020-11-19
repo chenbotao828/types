@@ -47,8 +47,11 @@
 (assert-eq '2 '(str_count "--a---" "--" ))
 (assert-eq '0 '(str_count "--a---" "----" ))
 
+(assert-eq 't '(str_startwith "--a---" "--" ))
+(assert-eq 'nil '(str_startwith "--a---" "n" ))
+(assert-eq 'nil '(str_startwith "" "n" ))
 (assert-eq 't '(str_endswith "--a---" "---" ))
-(assert-eq 'nil '(str_endswith "--a---" "n" ))
+(assert-eq 'nil '(str_endswith "" "n" ))
 
 (assert-eq 't '(str_isalpha "aAZz" ))
 (assert-eq 'nil '(str_isalpha "1aAZz" ))

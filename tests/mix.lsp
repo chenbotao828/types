@@ -124,4 +124,3 @@
 (assert-eq 'nil '(bool nil ) )
 (assert-eq 'nil '(bool 0) )
 (assert-eq 'nil '(bool "") )
-

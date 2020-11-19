@@ -32,12 +32,12 @@
   (setq ret (flatten lst))
   (foreach i ret 
            (check "gbk_lst2str item" (list i int?))
-          ;  (if (not (<= 0 i 255))
-          ;      (*error* (strcat "Out of range in gbk_lst2str item: "
-          ;                       (str i) "not between 0 and 255"
-          ;                       ))
-          ;      )
-  )
+           ;  (if (not (<= 0 i 255))
+           ;      (*error* (strcat "Out of range in gbk_lst2str item: "
+           ;                       (str i) "not between 0 and 255"
+           ;                       ))
+           ;      )
+           )
   (vl-list->string ret)
   )
 
@@ -51,13 +51,13 @@
        (remove (str_split s " ") "")
        ))
     (t (progn 
-    (setq xlen (1+ (strlen d)))
-    (while (setq po (vl-string-search d s))
-      (setq strlst (cons (substr s 1 po) strlst))
-      (setq s (substr s (+ po xlen)))
-    )
-    (reverse (cons s strlst))
-  ) ) ) )
+         (setq xlen (1+ (strlen d)))
+         (while (setq po (vl-string-search d s))
+                (setq strlst (cons (substr s 1 po) strlst))
+                (setq s (substr s (+ po xlen)))
+                )
+         (reverse (cons s strlst))
+         ) ) ) )
 
 (defun str_re_split (s d / L r)
   (check "str_re_split" (list s str? d (list nil? str?)))
@@ -70,15 +70,15 @@
        ))
     
     (t (progn
-        (setq r (vlax-create-object "vbscript.regexp"))
-        (vlax-put-property r 'Global 1)
-        (vlax-put-property r 'Pattern (strcat "([^" d "]+)"))
-        (vlax-for x (vlax-invoke r 'Execute s)(setq L (cons(vla-get-Value x) L)))
-        (vlax-release-object r)
-        (reverse L)
-      )
+         (setq r (vlax-create-object "vbscript.regexp"))
+         (vlax-put-property r 'Global 1)
+         (vlax-put-property r 'Pattern (strcat "([^" d "]+)"))
+         (vlax-for x (vlax-invoke r 'Execute s)(setq L (cons(vla-get-Value x) L)))
+         (vlax-release-object r)
+         (reverse L)
+         )
+       )
     )
-  )
   )
 
 (defun str_splits (s ds)
@@ -102,16 +102,17 @@
         )
       )
   )
-
-(defun str_replace (x old new / temp)
-  ;; (str_replace "abcabc" "a" "x") -> "xbcxbc"
-  (check "str_replace" (list x str? old str? new str?))
-  (setq temp nil)
-  (while (/= temp x)
-         (progn
-           (setq temp x)
-           (setq x (vl-string-subst new old temp))))
-  x)
+(defun str_replace (string old new)
+  (check "str_replace" (list string str? old str? new str?))
+  (pipe string (list
+            (lambda (x)
+              (if (= old "")
+                  (as_list string)
+                  (str_split string old))
+                  )
+            (list concat new)
+            ))
+  )
 
 (defun str_format (string al)
   (check "str_format" (list string str? al (list list? al?)))
@@ -163,11 +164,18 @@
   ret
   )
 
+(defun str_startwith (x i)
+  (check "str_startwith" (list x str? i str?))
+  (if (>= (len x) (len i)) 
+      (== (span x  nil (len i)) i)
+      nil
+      )
+  )
 (defun str_endswith (x i)
   (check "str_endswith" (list x str? i str?))
   (if (>= (len x) (len i)) 
       (== (span x (- 0 (len i)) nil) i)
-      t
+      nil
       )
   )
 
@@ -302,54 +310,31 @@
       )  
   )
 
-(defun str_lower (x / sl ret)
+(defun str_lower (x)
   (check "str_lower" (list x str?))
-  (setq sl (gbk_str2lst x) ret nil)
-  (foreach i sl
-           (if (and (int? i) (<= 65 i 90))
-               (setq ret (consend (+ i 32) ret))
-               (setq ret (consend i ret))
-               )
-           )
-  (gbk_lst2str ret)
+  (strcase x T)
   )
 
-(defun str_upper (x / sl ret)
+(defun str_upper (x)
   (check "str_upper" (list x str?))
-  (setq sl (gbk_str2lst x) ret nil)
-  (foreach i sl
-           (if (and (int? i) (<= 97 i 122))
-               (setq ret (consend (- i 32) ret))
-               (setq ret (consend i ret))
-               )
-           )
-  (gbk_lst2str ret)
+  (strcase x)
   )
-
 (defun str_lstrip (x chars / sl cl meet)
   (if (nil? chars) (setq chars " "))
   (check "str_lstrip" (list x str? chars str?))
-  (setq sl (gbk_str2lst x) cl (gbk_str2lst chars) meet t)
-  (while meet
-         (if (member (car sl) cl) (setq sl (cdr sl)) (setq meet nil))
-         )
-  (gbk_lst2str sl)
+  (vl-string-left-trim chars x)
   )
 
 (defun str_rstrip (x chars / sl cl meet)
   (if (nil? chars) (setq chars " "))
   (check "str_rstrip" (list x str? chars str?))
-  (setq sl (reverse (gbk_str2lst x)) cl (gbk_str2lst chars) meet t)
-  (while meet
-         (if (member (car sl) cl) (setq sl (cdr sl)) (setq meet nil))
-         )
-  (gbk_lst2str (reverse sl))
+  (vl-string-right-trim chars x)
   )
 
 (defun str_strip (x chars)
   (if (nil? chars) (setq chars " "))
   (check "str_strip" (list x str? chars str?))
-  (str_rstrip (str_lstrip x chars) chars)
+  (vl-string-trim chars x)
   )
 
 ;; (defun str_maketrans (x intab outtab / ls ret id)

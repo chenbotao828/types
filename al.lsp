@@ -101,3 +101,8 @@
 (setq setattr al_upsert)
 (setq getattr al_get)
 (setq delattr remove)
+
+(defun al_attach (al lst)
+  (check "al_attach" (list al al? lst list?))
+  (al_upserts al (al_make lst))
+)

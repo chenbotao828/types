@@ -1,12 +1,22 @@
 (deftest "pipe")
-
-(assert-eq '9 '(pipe "123" '(as_list (select int) (select 1+) sum)))
-(assert-eq '"123" '(pipe "1a2v3c" '(as_list (where str_isdemical) sum)))
+(assert-eq '9 '(pipe "123" (list as_list (list select int) (list select 1+) sum)))
+(assert-eq '"123" '(pipe "1a2v3c" (list as_list (list where str_isdemical) sum)))
 
 (setq pipe_set_test 1)
-(pipe_set 'pipe_set_test '((+ 3) sqrt))
+(pipe_set 'pipe_set_test (list (list + 3) sqrt))
 (assert-eq '2 pipe_set_test)
 (setq pipe_set_test nil)
+
+(defcls 'test_pipe_do nil '(a))
+(defmethod 'test_pipe_do 'add1
+  (lambda (self)
+   (al_upsert self 'a (+ 1 (do self 'a)))
+  )
+)
+(assert-eq '3 '(do (pipe_do (test_pipe_do 1) '(add1 add1)) 'a))
+(setq test_pipe_do nil
+      _test_pipe_do nil
+)
 
 (assert-eq 't '(pipe_func? '(lambda (x) (+ x 1))))
 (assert-eq 't '(pipe_func? (function (lambda (x) (+ x 1)))))
@@ -71,6 +81,9 @@
 (assert-eq ''(1 3 5) '(slice '(1 2 3 4 5) 0 5 2))
 (assert-eq ''(1 3 5) '(slice '(1 2 3 4 5) 0 15 2))
 (assert-eq 'nil '(slice nil 0 5 2))
+
+(assert-eq ''((1 4) (2 5) (3 6)) '(zip_with '(1 2 3) '(4 5 6)))
+(assert-eq ''((1 4)) '(zip_with '(1 2 3) '(4)))
 
 (assert-eq ''(("1" 1 4 7) ("2" 2 5 8) ("0" 0 3 6 9)) 
            '(groupby (range 0 10 1)

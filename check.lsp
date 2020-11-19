@@ -14,6 +14,24 @@
   (if (= 'str (type x))
       t nil))
 
+(defun str0? (s)
+  (if (and (str? s)
+           (= 0 (read s))
+           )
+      t
+      nil
+      )
+  )
+
+(defun strnum? (s)
+  (if (and (str? s)
+           (num? (read s))
+           )
+      t
+      nil
+      )
+  )
+
 (defun list? (x)
   (if (= 'list (type x))
       t nil))

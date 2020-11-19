@@ -1,4 +1,4 @@
-;  func?              obj?  cls?   inst£¿  cls_func?
+;  func?              obj?  cls?   inst?  cls_func?
 ; _circle             t      t     nil      nil
 ; (circle '(1 2) 3)   t     nil     t       nil
 ; circle              nil   nil    nil      t

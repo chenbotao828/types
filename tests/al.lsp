@@ -42,3 +42,6 @@
 
 (assert-eq ''((3 . 4) (1 . 1) (4 . 4))
            '(al_upserts (al_make '(1 2 3 4)) (al_make '(1 1 4 4))))
+
+(assert-eq ''((3 . 4) (1 . 1) (4 . 4))
+           '(al_attach '((3 . 4)) (list 1 1 4 4)))

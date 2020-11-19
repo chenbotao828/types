@@ -1,23 +1,34 @@
 (defun pipe (x fs)
   (check "pipe" (list fs list?))
-  (foreach 
-    f fs
-    (if (and (list? f) (= (car f) 'QUOTE)) (setq f (cdr f)))
-    (cond
-      ((func? f) (setq x (apply 'f (list x))))
-      ((sym? f) (setq x (apply f (list x))))
-      ((and (list? f) (= (car f) 'lambda)) 
-       (setq x (apply f (list x))))
-      ((and (list? f) (/= (car f) 'lambda)) 
-       (setq x (apply (car f) (cons x (cdr f)))))
-      ))
-  x
-  )
+  (foreach f fs (cond
+                  ((func? f) (setq x (apply 'f (list x))))
+                  ((list? f) (setq x (apply (QUOTE (car f)) (cons x (cdr f)))))
+                  )))
 
 (defun pipe_set (sym fs) 
   (check "pipe_set" (list sym  sym?))
   (set sym (pipe (eval sym) fs))
   )
+
+(defun pipe_do (x lst / ret)
+  (check "pipe_do" (list x obj? lst list?))
+  (setq ret x)
+  (foreach i lst
+    (progn
+      (setq ret (do ret i))
+    )
+  )
+)
+
+(defun pipe_dot (x lst / ret)
+  (check "pipe_dot" (list x al? lst list?))
+  (setq ret x)
+  (foreach i lst
+    (progn
+      (setq ret (dot ret i))
+    )
+  )
+)
 
 (defun pipe_func? (x)
   (or (func? x) (sym_func? x) (lambda? x)))
@@ -125,7 +136,7 @@
 (defun take_while (x f / ret)
   (check "take_while" (list x (list list? nil?) f pipe_func?))
   (setq f (as_func f) )
-  (while (apply 'f (list (car x)))
+  (while (and (car x) (apply 'f (list (car x))))
          (setq ret (consend (car x) ret)
                x (cdr x))) 
   ret
@@ -209,7 +220,7 @@
 
 (defun zip_with (l1 l2)
   (check "zip_with" (list l1 (list list? nil?) l2 (list list? nil?) ))
-  (zip (cons l1 l2))
+  (zip (list l1 l2))
   )
 
 (defun groupby (x f / ret)

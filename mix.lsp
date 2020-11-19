@@ -181,6 +181,7 @@
 (defun in (x y)
   (cond 
     ((and (str? x) (str? y)) (if (vl-string-search x y) t nil))
+    ((and (sym? x) (sym? y)) (in (str x) (str y)))
     ((al? y) (if (member x (al_keys y)) t nil))
     ((nil? y) nil)
     (t (progn
@@ -197,7 +198,7 @@
 (defun contain (y x) (in x y))
 
 (defun sum (lst)
-  (check "sum" (list lst list? (car lst) (list str? num? list?)))
+  (check "sum" (list lst list? (car lst) (list nil? str? num? list?)))
   (cond 
     ((str? (car lst)) 
      (progn
@@ -219,6 +220,8 @@
      )
     )
   )
+
+(setq add sum)
 
 (defun multi (x n / ret)
   (check "multi" (list x (list str? num? list?)
@@ -258,8 +261,10 @@
 
 (defun floatit (x)
   (check "floatit" (list x (list num? str?)))
-  (cond ((num? x) (+ x 0.0))
-        ((str? x) (atof x))
+  (cond ((num? x) (float x))
+        ((str? x) (cond ((str0? x) 0)
+                        ((= 0 (atof x)) nil)
+                        (t (atof x))))
         (t nil)
         )
   )
@@ -350,7 +355,7 @@
 (defun bool (x)
   (if (in x (list 0 nil "")) nil t)
   )
-
+;; sum
 ;; (timeit '(where '(1 2 3) num?))
 ;; all input func in autolisp:
 ;; http://help.autodesk.com/view/ACD/2015/ENU/?guid=GUID-7F024C1B-EFB8-4F6C-9EFE-A6491210A4CD
