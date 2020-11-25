@@ -172,7 +172,7 @@
          (setq sl (car l) l (cdr l))
          (if (list? sl)
              (setq l (append sl l))
-             (setq ret (consend sl ret)))))
+             (setq ret (append ret (list sl))))))
 
 (setq traverse flatten)
 

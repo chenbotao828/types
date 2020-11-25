@@ -150,12 +150,27 @@
        ret
        ))))
 
-(defun reversed (x)
+(defun reversed (x / str_reverse)
   (check "reversed" (list x (list str? nil? list?)))
+  (defun str_reverse (x / sl ret) 
+    (setq sl (vl-string->list x) ret nil)
+    (while sl
+           (progn
+             (if  (and (<= 129 (car sl) 254)
+                       (<= 64 (cadr sl) 254))
+                 (setq ret (cons (car sl) (cons (cadr sl) ret))
+                        sl (cddr sl)
+                       )
+                 (setq ret (cons (car sl) ret)
+                       sl (cdr sl))
+                 )
+             )
+           )
+    (vl-list->string ret)
+    )
   (cond ((or (list? x) (nil? x)) (reverse x))
-        ((str? x) (sum (reverse (as_list x))))
-        ))
-
+        ((str? x) (if (= "" x) "" (str_reverse x))))
+  )
 (defun consend (x l)
   (cond 
     ((or (list? l) (nil? l)) (append l (list x)))
@@ -169,9 +184,9 @@
      (progn
        (setq temp (gbk_str2lst x) ret nil) 
        (while temp
-              (setq ret (consend (gbk_lst2str (list (car temp)))  ret)
+              (setq ret (cons (gbk_lst2str (list (car temp)))  ret)
                     temp (cdr temp)))
-       ret
+       (reverse ret)
        ))
     ((list? x) x)
     (t (list x))
